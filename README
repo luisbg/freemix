@@ -1,0 +1,11 @@
+freemix
+    is a free live video editing software, thought for vj's 
+    and video artists in general
+
+Need to have installed: 
+    python :         http://www.python.org
+    pygtk :          http://www.gtk.org/
+                     http://www.pygtk.org/
+    gstreamer :
+
+Please visit https://edge.launchpad.net/freemix for more information.

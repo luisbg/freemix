@@ -1,7 +1,7 @@
 #!/usr/bin/env python
  
 # Copyright (C) 2008 Luis de Bethencourt
-# <luisbg@ubuntu.com>
+# <luis.debethencourt@sun.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

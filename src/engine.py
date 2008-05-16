@@ -40,14 +40,28 @@ class Engine:
         self.bus = self.pipeline.get_bus()
         self.bus.add_signal_watch()
         self.bus.connect ('message', bus_handler)
- 
+
+        self.bin1 = self.VideoBin(filesrc)
+
+        self.imagesink = gst.element_factory_make("ximagesink", "imagesink")
+        self.imagesink.set_property("force-aspect-ratio", True)
+        self.imagesink.set_property("handle-expose", True)
+        self.pipeline.add(self.bin1, self.imagesink)
+
+        self.bin1.link(self.imagesink)
+
+        self.first = True
+        self.pipeline.set_state(gst.STATE_PAUSED)
+
+    def VideoBin(self, filesrc):
+        self.bin = gst.Bin()
         self.src = gst.element_factory_make("filesrc", "src")
-        self.pipeline.add(self.src)
+        self.bin.add(self.src)
         self.src.set_property("location", filesrc)
         
         self.decodebin = gst.element_factory_make("decodebin", "decodebin")
         self.decodebin.connect("new-decoded-pad", self.OnDynamicPad)
-        self.pipeline.add(self.decodebin)
+        self.bin.add(self.decodebin)
         
         self.src.link(self.decodebin)
 
@@ -58,20 +72,18 @@ class Engine:
         
         self.videoscale = gst.element_factory_make("videoscale", "videoscale")
 
-        self.pipeline.add(self.colorspace, self.vqueue, self.videoscale)
+        self.bin.add(self.colorspace, self.vqueue, self.videoscale)
 
         self.colorspace.link(self.vqueue)
         self.vqueue.link(self.videoscale)
- 
-	self.imagesink = gst.element_factory_make("ximagesink", "imagesink")
-        self.imagesink.set_property("force-aspect-ratio", True)
-        self.imagesink.set_property("handle-expose", True)
-        self.pipeline.add(self.imagesink)
- 
-        self.videoscale.link(self.imagesink)
 
-	self.first = True
-        self.pipeline.set_state(gst.STATE_PAUSED)
+        target = self.videoscale.get_pad("src")
+        print target
+        self.sinkpad = gst.GhostPad("sink", target)
+        self.sinkpad.set_active(True)
+        self.bin.add_pad(self.sinkpad)
+ 
+        return self.bin
 
     def OnDynamicPad(self, dbin, pad, islast):
         pad.link(self.colorspace.get_pad("sink"))
@@ -91,5 +103,15 @@ class Engine:
 
 
 if __name__ == "__main__":
-    engine = Engine("your video file")
+    import os, optparse
+
+    usage = """ flickbook -i [file]"""
+
+    parser = optparse.OptionParser(usage=usage)
+    parser.add_option("-i", "--input", action="store", type="string", dest="input", help="Input video file", default="")
+    (options, args) = parser.parse_args()
+
+    print "Playing: %r" % options.input
+
+    engine = Engine(options.input)
     gobject.MainLoop().run()

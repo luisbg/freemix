@@ -1,0 +1,13 @@
+#!/bin/sh
+ 
+######## CONFIGURATION OPTIONS ########
+#PROGRAM_DIR="/home/username/apps/fremix"      # insert full path to freemix bin dir
+#######################################
+ 
+# get the app dir if not already defined
+if [ -z "$PROGRAM_DIR" ]; then
+    PROGRAM_DIR=`dirname "$0"`
+fi
+ 
+cd ${PROGRAM_DIR}
+exec python -O src/freemix.py "$@"

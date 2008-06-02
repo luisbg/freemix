@@ -1,7 +1,7 @@
 #!/usr/bin/env python
  
 # Copyright (C) 2008 Luis de Bethencourt
-# <luis.debethencourt@sun.com>
+# <luisbg@ubuntu.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,33 +34,39 @@ class VideoTable:
         for i in range(self.source_table_range):
             self.source_table.append(VideoSource())
 
-    def file_import(self, file_src):
+    def import_file(self, file_src):
         i = 0
         filled = False
         while ((i < 20) and (filled == False)):
             if (self.source_table[i].is_used() == False):
                 self.source_table[i].set_file(file_src)
                 filled = True
-                print i
+                cell = i
             i+=1
-        # To Do: missing thumbnail handling
+
+        return cell
 
     def video_play(self, video_number):
-        self.source_table[video_number].play_file
-        print "video_play"
+        self.source_table[video_number].play_file()
 
     def empty_element(self, video_number):
-        self.source_table[video_number].empty
+        self.source_table[video_number].empty()
 
     def change_video_pitch(self, video_number, pitch):
         self.source_table[video_number].change_pitch(pitch)
 
+    def get_pitch(self, cell):
+        return self.source_table[cell].get_pitch()
+
+    def get_file(self, cell):
+        return self.source_table[cell].get_file()
+
 
 if __name__ == "__main__":
-    print "testing..."
+    print "Videotable testing..."
     videotable = VideoTable(5, 4)
-    videotable.file_import("test_1.avi")
-    videotable.file_import("test_2.avi")
+    videotable.import_file("test_1.avi")
+    videotable.import_file("test_2.avi")
     print videotable.source_table[0].file
     print videotable.source_table[1].file
     print videotable.source_table[0].is_used()

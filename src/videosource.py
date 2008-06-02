@@ -1,7 +1,7 @@
 #!/usr/bin/env python
  
 # Copyright (C) 2008 Luis de Bethencourt
-# <luis.debethencourt@sun.com>
+# <luisbg@ubuntu.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -32,17 +32,26 @@ class VideoSource:
             self.file = file_src
             self.used = True
 
+    def get_file(self):
+        return self.file
+
     def change_pitch(self, pitch):
         if (self.used == True):
             self.pitch = pitch
+            print "new pitch: %r" % pitch
+            # To Do: send new pitch to engine
+
+    def get_pitch(self):
+        return self.pitch
 
     def play_file(self):
         if (self.used == True):
-            pass
+            print "playing: " + self.file
             # To Do: send file and pitch to engine
 
     def empty(self):
         if (self.used == True):
+            print "emptying: " + self.file
             self.used = False
             self.file = ""
             self.pitch = 1.0
@@ -58,3 +67,7 @@ class VideoSource:
 
     def is_active(self):
         return self.active
+
+
+if __name__ == "__main__":
+     print "VideoSource testing..."

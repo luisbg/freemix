@@ -1,7 +1,7 @@
 #!/usr/bin/env python
  
 # Copyright (C) 2008 Luis de Bethencourt
-# <luis.debethencourt@sun.com>
+# <luisbg"ubuntu.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,13 +28,13 @@ import pygtk
 pygtk.require('2.0')	# Must be before 'import gtk'
 import gtk
 
+from gui import Gui
 from videotable import VideoTable
-
 from sequencer import Sequencer 
 
 class Freemix:
     def main(self):
-        print "freemix 0.1 alpha"
+        print "freemix 0.2 beta"
 
         self.table_width = 5
         self.table_height = 4
@@ -43,7 +43,8 @@ class Freemix:
         self.videotable = VideoTable(self.table_width, self.table_height)
         self.sequencer = Sequencer(self.sequencer_steps)    
 
-        gtk.main()
+        self.gui = Gui(self.videotable, self.sequencer) 
+        self.gui.main()
 
 if __name__ == "__main__":
     try:

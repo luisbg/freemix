@@ -22,6 +22,9 @@ gobject.threads_init()
 import gst
 
 class Engine:
+    '''freemix engine class. Encapsulates all the core gstreamer work
+       in nice function per feature for the frontend.''' 
+
     def __init__(self, filesrc):
         def bus_handler(unused_bus, message):
             print message.type

@@ -25,16 +25,21 @@ class VideoTable:
     It stores and handles the video sources table.'''
 
     def __init__(self, table_width, table_height):
+        '''Initialize variables and fill table with videosources.'''
+
         self.source_table_width = table_width
         self.source_table_height = table_height
         self.source_table_range = \
             self.source_table_width * self.source_table_height
         self.source_table = []
 
+        # fill
         for i in range(self.source_table_range):
             self.source_table.append(VideoSource())
 
     def import_file(self, file_src):
+        '''Import file to first empty cell.'''
+
         i = 0
         filled = False
         while ((i < 20) and (filled == False)):
@@ -47,18 +52,28 @@ class VideoTable:
         return cell
 
     def video_play(self, video_number):
+        '''Play video file of videotable cell.'''
+
         self.source_table[video_number].play_file()
 
     def empty_element(self, video_number):
+        '''Empty videotbale cell.'''
+
         self.source_table[video_number].empty()
 
     def change_video_pitch(self, video_number, pitch):
+        '''Change the pitch of the videotable cell.'''
+
         self.source_table[video_number].change_pitch(pitch)
 
     def get_pitch(self, cell):
+        '''Get the pitch of the videotable cell.'''
+
         return self.source_table[cell].get_pitch()
 
     def get_file(self, cell):
+        '''Get file of the videotable cell.'''
+
         return self.source_table[cell].get_file()
 
 

@@ -32,24 +32,29 @@ from gui import Gui
 from videotable import VideoTable
 from sequencer import Sequencer 
 
+TABLE_WIDTH = 5
+TABLE_HEIGHT = 4
+SEQUENCER_STEPS = 4
+
 class Freemix:
-    def main(self):
+    '''Freemix base class.
+       Starts all classes:
+           videotable -> videosource
+           sequencer -> videosource
+           gui'''
+
+    def __init__(self, table_width, table_height, sequencer_steps):
         print "freemix 0.2 beta"
 
-        self.table_width = 5
-        self.table_height = 4
-        self.sequencer_steps = 4
+        videotable = VideoTable(table_width, table_height)
+        sequencer = Sequencer(sequencer_steps)    
 
-        self.videotable = VideoTable(self.table_width, self.table_height)
-        self.sequencer = Sequencer(self.sequencer_steps)    
-
-        self.gui = Gui(self.videotable, self.sequencer) 
-        self.gui.main()
+        gui = Gui(videotable, sequencer) 
+        gui.main()
 
 if __name__ == "__main__":
     try:
-        freemix = Freemix()
-        freemix.main()
+        freemix = Freemix(TABLE_WIDTH, TABLE_HEIGHT, SEQUENCER_STEPS)
     except SystemExit:
         raise
     

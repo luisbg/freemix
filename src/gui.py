@@ -91,7 +91,7 @@ class Gui:
         self.window.set_title("freemix")
 
         # border and icon       
-        self.window.set_border_width(20) 
+        self.window.set_border_width(10) 
         icon = gtk.gdk.pixbuf_new_from_file("img/freemix_small.png")
         self.window.set_icon(icon)
 
@@ -101,6 +101,7 @@ class Gui:
         # box that contains all interface
         self.hbox1 = gtk.HBox(False, 0)
         self.window.add(self.hbox1) 
+        self.window.set_default_size(1280, 600)
 
 
 ### import file
@@ -109,13 +110,21 @@ class Gui:
         '''Creates the import file frame.'''
 
         import_frame = gtk.Frame("import file")
-        self.hbox1.pack_start(import_frame, False, False, 0)
-        self.file_chooser = gtk.FileChooserWidget()
+        self.hbox1.pack_start(import_frame, True, True, 0)
+        self.file_chooser = gtk.FileChooserWidget(action=gtk.FILE_CHOOSER_ACTION_OPEN)
         import_frame.add(self.file_chooser)
         self.file_chooser.connect("file-activated", self.file_chosen, None)
 
+        filter = gtk.FileFilter()
+        filter.set_name("Video")
+        filter.add_mime_type("video/mpeg")
+        filter.add_pattern("*.avi")
+        filter.add_pattern("*.mov")
+        self.file_chooser.add_filter(filter)
+        # help(self.file_chooser)
+
         self.vbox1 = gtk.VBox(False, 0)
-        self.hbox1.pack_start(self.vbox1, False, False, 0)
+        self.hbox1.pack_start(self.vbox1, True, True, 0)
 
     def file_chosen(self, widget, data=None):
         '''Runs when a file has been chosen.'''

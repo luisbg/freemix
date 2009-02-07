@@ -94,7 +94,7 @@ class Sequencer:
     def loop_callback(self):
         '''Run step.'''
 
-        print self.step
+        # print self.step
 
         # if active play file
         if (self.sequencer_sources[self.step].is_active() == True):

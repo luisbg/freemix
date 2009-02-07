@@ -21,6 +21,7 @@ import pygtk
 pygtk.require('2.0')
 import gtk
 import os
+import gio
 
 from videotable import VideoTable
 from sequencer import Sequencer
@@ -130,7 +131,10 @@ class Gui:
         # "mkdir -p %s/.freemix%s", HOME, dirname
 
         # set thumbnail to video cell
-        thumbfile = self.HOME + "/.freemix" + file
+        gfile = gio.File(file)
+        info = gfile.query_info(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH, \
+            gio.FILE_QUERY_INFO_NONE)
+        thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
         thumbnail = gtk.gdk.pixbuf_new_from_file_at_size (thumbfile, \
             self.thumbnail_width, self.thumbnail_height)
         self.video_image[cell].set_from_pixbuf(thumbnail)
@@ -347,7 +351,10 @@ class Gui:
         self.sequencer.load_file(number, file_src)
 
         # set thumbnail
-        thumbfile = self.HOME + "/.freemix" + file_src
+        gfile = gio.File(file_src)
+        info = gfile.query_info(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH, \
+            gio.FILE_QUERY_INFO_NONE)
+        thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
         thumbnail = gtk.gdk.pixbuf_new_from_file_at_size (thumbfile, \
             self.thumbnail_width, self.thumbnail_height)
         self.seq_step_image[number].set_from_pixbuf(thumbnail)

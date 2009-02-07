@@ -34,6 +34,7 @@ class Engine:
         self.running = True 
 
         def bus_handler(unused_bus, message):
+            # print message.type
             if message.type == gst.MESSAGE_ASYNC_DONE:
                 if self.first:
                   self.AsyncDone()
@@ -41,6 +42,8 @@ class Engine:
                   self.pipeline.set_state(gst.STATE_PLAYING)
             if message.type == gst.MESSAGE_SEGMENT_DONE:
                 self.SeekToLocation(0)
+            if message.type == gst.MESSAGE_EOS:
+                self.AsyncDone()
             if message.type == gst.MESSAGE_ERROR:
                 print "ERROR"
             return gst.BUS_PASS
@@ -88,7 +91,6 @@ class Engine:
         self.vqueue.link(self.videoscale)
 
         target = self.videoscale.get_pad("src")
-        print target
         self.sinkpad = gst.GhostPad("sink", target)
         self.sinkpad.set_active(True)
         self.bin.add_pad(self.sinkpad)
@@ -112,13 +114,12 @@ class Engine:
         print "seek to %r" % location
 
     def switchVideo(self, filesrc):
-        print "switching to video: " + filesrc
         self.pipeline.set_state(gst.STATE_READY)
         self.src.set_property("location", filesrc)
         self.pipeline.set_state(gst.STATE_PLAYING)
 
     def play(self, filesrc):
-        print "engine got call to play: " + filesrc
+        # print "engine got call to play: " + filesrc
         if self.running == False:
            self.start(filesrc)
         else:

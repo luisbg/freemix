@@ -79,6 +79,7 @@ class Gui:
 
         # show all
         self.window.show_all()
+        self.import_window.show_all()
 
 
 ### window
@@ -101,7 +102,6 @@ class Gui:
         # box that contains all interface
         self.hbox1 = gtk.HBox(False, 0)
         self.window.add(self.hbox1) 
-        self.window.set_default_size(1280, 600)
 
 
 ### import file
@@ -109,8 +109,12 @@ class Gui:
     def import_file_frame(self):
         '''Creates the import file frame.'''
 
+        self.import_window = gtk.Window()
+        self.hbox2 = gtk.HBox(False, 0)
+        self.import_window.add(self.hbox2)
+
         import_frame = gtk.Frame("import file")
-        self.hbox1.pack_start(import_frame, True, True, 0)
+        self.hbox2.pack_start(import_frame, True, True, 0)
         self.file_chooser = gtk.FileChooserWidget(action=gtk.FILE_CHOOSER_ACTION_OPEN)
         import_frame.add(self.file_chooser)
         self.file_chooser.connect("file-activated", self.file_chosen, None)
@@ -140,13 +144,11 @@ class Gui:
 
         # get file chosed name
         file = self.file_chooser.get_filename()
-        print file
+        # print file
 
         # import file into videotable and find out videotable cell it goes in 
         cell = self.videotable.import_file(file)
-        print cell
-        # "mplayer -really-quiet -vo png -frames 1 %s" file_src
-        # "mkdir -p %s/.freemix%s", HOME, dirname
+        # print cell
 
         # set thumbnail to video cell
         gfile = gio.File(file)

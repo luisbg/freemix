@@ -22,6 +22,8 @@ pygtk.require('2.0')
 import gtk
 import os
 import gio
+import subprocess
+import time
 
 from videotable import VideoTable
 from sequencer import Sequencer
@@ -155,6 +157,22 @@ class Gui:
         info = gfile.query_info(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH, \
             gio.FILE_QUERY_INFO_NONE)
         thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
+        if not(thumbfile):
+            if os.path.exists(os.environ["HOME"] + '/.freemix' + file):
+                thumbfile = os.environ["HOME"] + '/.freemix' + file
+            else:
+                print "browse with gnautilus to have the thumbnail of " + file
+                folder = os.environ["HOME"] + '/.freemix' + file[:file.rfind('/')]
+                if not(os.path.exists(folder)):
+                    os.makedirs(folder)
+                command = "gnome-video-thumbnailer " + file + " ~/.freemix" + file
+                subprocess.Popen(command, shell=True, \
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                thumbfile = os.environ["HOME"] + "/.freemix" + file 
+
+                while not(os.path.exists(thumbfile)):
+                    time.sleep(0.5)
+            
         thumbnail = gtk.gdk.pixbuf_new_from_file_at_size (thumbfile, \
             self.thumbnail_width, self.thumbnail_height)
         self.video_image[cell].set_from_pixbuf(thumbnail)
@@ -375,6 +393,9 @@ class Gui:
         info = gfile.query_info(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH, \
             gio.FILE_QUERY_INFO_NONE)
         thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
+        if not(thumbfile):
+            if os.path.exists(os.environ["HOME"] + '/.freemix' + file_src):
+                thumbfile = os.environ["HOME"] + '/.freemix' + file_src
         thumbnail = gtk.gdk.pixbuf_new_from_file_at_size (thumbfile, \
             self.thumbnail_width, self.thumbnail_height)
         self.seq_step_image[number].set_from_pixbuf(thumbnail)

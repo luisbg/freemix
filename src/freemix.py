@@ -47,6 +47,9 @@ class Freemix:
     def __init__(self, table_width, table_height, sequencer_steps):
         print "freemix 0.2 beta"
 
+        if not(os.path.exists(os.environ["HOME"] + "/.freemix/")):
+            os.mkdir(os.environ["HOME"] + "/.freemix/")
+
         engine = Engine()
         videotable = VideoTable(table_width, table_height, engine)
         sequencer = Sequencer(sequencer_steps, engine)    

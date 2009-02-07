@@ -31,6 +31,7 @@ import gtk
 from gui import Gui
 from videotable import VideoTable
 from sequencer import Sequencer 
+from engine import Engine
 
 TABLE_WIDTH = 5
 TABLE_HEIGHT = 4
@@ -46,8 +47,9 @@ class Freemix:
     def __init__(self, table_width, table_height, sequencer_steps):
         print "freemix 0.2 beta"
 
-        videotable = VideoTable(table_width, table_height)
-        sequencer = Sequencer(sequencer_steps)    
+        engine = Engine()
+        videotable = VideoTable(table_width, table_height, engine)
+        sequencer = Sequencer(sequencer_steps, engine)    
 
         gui = Gui(videotable, sequencer) 
         gui.main()

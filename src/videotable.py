@@ -18,14 +18,16 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from videosource import VideoSource 
-
+from engine import Engine
 
 class VideoTable:
     '''VideoTable class is the man in the middle between the gui and the engine.
     It stores and handles the video sources table.'''
 
-    def __init__(self, table_width, table_height):
+    def __init__(self, table_width, table_height, engine):
         '''Initialize variables and fill table with videosources.'''
+
+        self.engine = engine
 
         self.source_table_width = table_width
         self.source_table_height = table_height
@@ -54,7 +56,8 @@ class VideoTable:
     def video_play(self, video_number):
         '''Play video file of videotable cell.'''
 
-        self.source_table[video_number].play_file()
+        file = self.source_table[video_number].get_file()
+        self.engine.play(file)
 
     def empty_element(self, video_number):
         '''Empty videotbale cell.'''

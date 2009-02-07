@@ -24,8 +24,10 @@ class Sequencer:
     '''Sequencer class.
     Handles the steps and loop of the sequencer.'''
 
-    def __init__(self, seq_steps):
+    def __init__(self, seq_steps, engine):
         '''Initialize sequencer variables.'''
+
+        self.engine = engine
 
         self.step = 0
         self.running_step = 0
@@ -96,7 +98,8 @@ class Sequencer:
 
         # if active play file
         if (self.sequencer_sources[self.step].is_active() == True):
-           self.sequencer_sources[self.step].play_file()
+           file = self.sequencer_sources[self.step].get_file()
+           self.engine.play(file)
 
         # step up
         if (self.step != (self.sequencer_steps - 1)):        

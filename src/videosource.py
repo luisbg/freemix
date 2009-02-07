@@ -17,6 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+from engine import Engine
 
 class VideoSource:
     '''VideoSource is each element of the video sources table/sequencer.
@@ -54,13 +55,6 @@ class VideoSource:
         '''Get video pitch.'''
 
         return self.pitch
-
-    def play_file(self):
-        '''Play video file if element is used.'''
-
-        if (self.used == True):
-            print "playing: " + self.file
-            # To Do: send file and pitch to engine
 
     def empty(self):
         '''Empty the element if used.'''

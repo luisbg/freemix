@@ -20,18 +20,23 @@
 import gobject
 gobject.threads_init() 
 import gst
+import time
 
 class Engine:
     '''freemix engine class. Encapsulates all the core gstreamer work
        in nice function per feature for the frontend.''' 
 
-    def __init__(self, filesrc):
+    def __init__(self):
+        self.running = False
+        print "init engine"
+
+    def start(self, filesrc):
+        self.running = True 
+
         def bus_handler(unused_bus, message):
-            print message.type
             if message.type == gst.MESSAGE_ASYNC_DONE:
                 if self.first:
-                  print "Playback file."
-                  #self.AsyncDone()
+                  self.AsyncDone()
                   self.first = False
                   self.pipeline.set_state(gst.STATE_PLAYING)
             if message.type == gst.MESSAGE_SEGMENT_DONE:
@@ -45,83 +50,53 @@ class Engine:
         self.bus = self.pipeline.get_bus()
         self.bus.add_signal_watch()
         self.bus.connect ('message', bus_handler)
-        
-        self.src = gst.element_factory_make("filesrc", "src")
-        self.decodebin = gst.element_factory_make("decodebin", "decodebin")
-        self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspace")
-        self.vqueue = gst.element_factory_make("queue", "vqueue")
-        self.videoscale = gst.element_factory_make("videoscale", "videoscale")
 
-        self.src2 = gst.element_factory_make("filesrc", "src2")
-        self.decodebin2 = gst.element_factory_make("decodebin", "decodebin2")
-        self.colorspace2 = gst.element_factory_make("ffmpegcolorspace", "colorspace2")
-        self.vqueue2 = gst.element_factory_make("queue", "vqueue2")
-        self.videoscale2 = gst.element_factory_make("videoscale", "videoscale2")
+        self.bin1 = self.VideoBin(filesrc)
 
-        self.mixer = gst.element_factory_make("videomixer", "mixer")
-        self.imagesink = gst.element_factory_make("ximagesink", "imagesink")
-
-        self.pipeline.add(self.src, self.decodebin, self.colorspace, \
-                          self.vqueue, self.videoscale, \
-                          self.src2, self.decodebin2, self.colorspace2, \
-                          self.vqueue2, self.videoscale2, \
-                          self.mixer, self.imagesink)
-
-        self.src.set_property("location", filesrc)
-        self.src2.set_property("location", "/home/luisbg/Desktop/poolSkating02.mov")
-
-        self.decodebin.connect("new-decoded-pad", self.OnDynamicPad)
-        self.src.link(self.decodebin)
-        self.decodebin2.connect("new-decoded-pad", self.OnDynamicPad)
-        self.src2.link(self.decodebin2)
-	
-	self.vqueue.set_property ("max-size-buffers", 3)
-        self.colorspace.link(self.vqueue)
-	self.vqueue2.set_property ("max-size-buffers", 3)
-        self.colorspace2.link(self.vqueue2)
-
-        self.vqueue.link(self.videoscale)
-        self.vqueue2.link(self.videoscale2)
-
-        self.spad = self.videoscale.get_static_pad('src')
-        self.dpad = self.mixer.get_request_pad('sink_%d')
-        self.spad2 = self.videoscale2.get_static_pad('src')
-        self.dpad2 = self.mixer.get_request_pad('sink_%d')
-
-        self.spad.link(self.dpad)
-        self.spad2.link(self.dpad2)
-
+        self.imagesink = gst.element_factory_make("xvimagesink", "imagesink")
         self.imagesink.set_property("force-aspect-ratio", True)
         self.imagesink.set_property("handle-expose", True)
+        self.pipeline.add(self.bin1, self.imagesink)
 
-        self.conv = gst.element_factory_make("ffmpegcolorspace", "conv")
-        self.pipeline.add(self.conv)
+        self.bin1.link(self.imagesink)
 
-        self.mixer.link(self.conv)
-        self.conv.link(self.imagesink)
-
-        self.control = gst.Controller(self.dpad, "alpha")
-        self.control.set_interpolation_mode("alpha", gst.INTERPOLATE_LINEAR)
-
-        self.control2 = gst.Controller(self.dpad2, "alpha")
-        self.control2.set_interpolation_mode("alpha", gst.INTERPOLATE_LINEAR)
-
-        self.control.set("alpha", 0, 0.5)
-        self.control2.set("alpha", 0, 0.5)
- 
         self.first = True
-        self.link = True
-        self.pipeline.set_state(gst.STATE_PAUSED)
+        self.pipeline.set_state(gst.STATE_PLAYING)
+
+    def VideoBin(self, filesrc):
+        self.bin = gst.Bin()
+        self.src = gst.element_factory_make("filesrc", "src")
+        self.bin.add(self.src)
+        self.src.set_property("location", filesrc)
+        
+        self.decodebin = gst.element_factory_make("decodebin", "decodebin")
+        self.decodebin.connect("new-decoded-pad", self.OnDynamicPad)
+        self.bin.add(self.decodebin)
+        
+        self.src.link(self.decodebin)
+
+        self.colorspace = gst.element_factory_make("ffmpegcolorspace", "colorspace")
+
+        self.vqueue = gst.element_factory_make("queue", "vqueue")
+	self.vqueue.set_property ("max-size-buffers", 3)
+        
+        self.videoscale = gst.element_factory_make("videoscale", "videoscale")
+
+        self.bin.add(self.colorspace, self.vqueue, self.videoscale)
+
+        self.colorspace.link(self.vqueue)
+        self.vqueue.link(self.videoscale)
+
+        target = self.videoscale.get_pad("src")
+        print target
+        self.sinkpad = gst.GhostPad("sink", target)
+        self.sinkpad.set_active(True)
+        self.bin.add_pad(self.sinkpad)
+ 
+        return self.bin
 
     def OnDynamicPad(self, dbin, pad, islast):
-        if self.link:
-            print "*************** ONE"
-            pad.link(self.colorspace.get_pad("sink"))
-            self.link = False
-        else:
-            print "*************** TWO"
-            pad.link(self.colorspace2.get_pad("sink"))
-            self.AsyncDone()
+        pad.link(self.colorspace.get_pad("sink"))
         print "OnDynamicPad called"
 
     def AsyncDone(self):
@@ -131,16 +106,29 @@ class Engine:
         print "Async"
 
     def SeekToLocation(self, location):
-        self.pipeline.seek (1.0, gst.FORMAT_TIME, \
-            gst.SEEK_FLAG_SEGMENT | gst.SEEK_FLAG_ACCURATE, \
-            gst.SEEK_TYPE_SET, 0, gst.SEEK_TYPE_NONE, location)
+        self.pipeline.seek_simple(gst.FORMAT_TIME, \
+            gst.SEEK_FLAG_SEGMENT, \
+            location)
         print "seek to %r" % location
+
+    def switchVideo(self, filesrc):
+        print "switching to video: " + filesrc
+        self.pipeline.set_state(gst.STATE_READY)
+        self.src.set_property("location", filesrc)
+        self.pipeline.set_state(gst.STATE_PLAYING)
+
+    def play(self, filesrc):
+        print "engine got call to play: " + filesrc
+        if self.running == False:
+           self.start(filesrc)
+        else:
+           self.switchVideo(filesrc) 
 
 
 if __name__ == "__main__":
     import os, optparse
 
-    usage = """ flickbook -i [file]"""
+    usage = """ engine.py -i [file]"""
 
     parser = optparse.OptionParser(usage=usage)
     parser.add_option("-i", "--input", action="store", type="string", dest="input", help="Input video file", default="")

@@ -28,22 +28,20 @@ class Engine:
 
     def __init__(self):
         self.running = False
-        print "init engine"
+        # print "init engine"
+        self.speed = 1.0
 
     def start(self, filesrc):
         self.running = True 
 
         def bus_handler(unused_bus, message):
             # print message.type
-            if message.type == gst.MESSAGE_ASYNC_DONE:
-                if self.first:
-                  self.AsyncDone()
-                  self.first = False
-                  self.pipeline.set_state(gst.STATE_PLAYING)
             if message.type == gst.MESSAGE_SEGMENT_DONE:
                 self.SeekToLocation(0)
             if message.type == gst.MESSAGE_EOS:
                 self.AsyncDone()
+            if message.type == gst.MESSAGE_TAG:
+                self.SeekToLocation(0)
             if message.type == gst.MESSAGE_ERROR:
                 print "ERROR"
             return gst.BUS_PASS
@@ -102,14 +100,14 @@ class Engine:
         print "OnDynamicPad called"
 
     def AsyncDone(self):
-        print self.pipeline.seek (1.0, gst.FORMAT_TIME, \
+        seek = self.pipeline.seek (self.speed, gst.FORMAT_TIME, \
             gst.SEEK_FLAG_SEGMENT | gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_ACCURATE, \
             gst.SEEK_TYPE_SET, 0, gst.SEEK_TYPE_NONE, 0)
-        print "Async"
+        print "Async " + str(self.speed) 
 
     def SeekToLocation(self, location):
-        self.pipeline.seek_simple(gst.FORMAT_TIME, \
-            gst.SEEK_FLAG_SEGMENT, \
+        self.pipeline.seek(self.speed, gst.FORMAT_TIME, \
+            gst.SEEK_FLAG_SEGMENT, gst.SEEK_TYPE_SET, 0, gst.SEEK_TYPE_NONE, \
             location)
         print "seek to %r" % location
 
@@ -117,9 +115,11 @@ class Engine:
         self.pipeline.set_state(gst.STATE_READY)
         self.src.set_property("location", filesrc)
         self.pipeline.set_state(gst.STATE_PLAYING)
+        self.SeekToLocation(0)
 
-    def play(self, filesrc):
+    def play(self, filesrc, speed):
         # print "engine got call to play: " + filesrc
+        self.speed = speed
         if self.running == False:
            self.start(filesrc)
         else:

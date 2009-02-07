@@ -48,7 +48,7 @@ class VideoSource:
 
         if (self.used == True):
             self.pitch = pitch
-            print "new pitch: %r" % pitch
+            # print "new pitch: %r" % pitch
             # To Do: send new pitch to engine
 
     def get_pitch(self):

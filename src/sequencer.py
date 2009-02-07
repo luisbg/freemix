@@ -99,7 +99,8 @@ class Sequencer:
         # if active play file
         if (self.sequencer_sources[self.step].is_active() == True):
            file = self.sequencer_sources[self.step].get_file()
-           self.engine.play(file)
+           pitch = self.sequencer_sources[self.step].get_pitch()
+           self.engine.play(file, pitch)
 
         # step up
         if (self.step != (self.sequencer_steps - 1)):        

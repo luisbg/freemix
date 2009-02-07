@@ -57,7 +57,8 @@ class VideoTable:
         '''Play video file of videotable cell.'''
 
         file = self.source_table[video_number].get_file()
-        self.engine.play(file)
+        pitch = self.source_table[video_number].get_pitch()
+        self.engine.play(file, pitch)
 
     def empty_element(self, video_number):
         '''Empty videotbale cell.'''

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
  
 # Copyright (C) 2008 Luis de Bethencourt
-# <luis.debethencourt@sun.com>
+# <luisbg@ubuntu.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -418,18 +418,18 @@ class Gui:
 
         self.window.add_accel_group(self.accel_group)
 
-        lista = [ord("1"), ord("2"), ord("3"), ord("4"), ord("5"), \
+        list = [ord("1"), ord("2"), ord("3"), ord("4"), ord("5"), \
                  ord("Q"), ord("W"), ord("E"), ord("R"), ord("T"), \
                  ord("A"), ord("S"), ord("D"), ord("F"), ord("G"), \
                  ord("Z"), ord("X"), ord("C"), ord("V"), ord("B")]
         for i in (range(self.NUM_MAX_VIDEOS)):
             self.button_src[i].add_accelerator("clicked", self.accel_group, \
-                lista[i], gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
+                list[i], gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
 
-#        self.seq_pitch_tap.add_accelerator("clicked", self.accel_group, \
-#            space, gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
-#        self.attach_detach_button.add_accelerator("clicked", self.accel_group, \
-#            delete, gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
+        self.seq_pitch_tap.add_accelerator("clicked", self.accel_group, \
+            gtk.keysyms.space, gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
+        self.attach_detach_button.add_accelerator("clicked", self.accel_group, \
+            gtk.keysyms.BackSpace, gtk.gdk.LOCK_MASK, gtk.ACCEL_VISIBLE)
 
 ### main and events 
 

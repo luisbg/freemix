@@ -97,19 +97,19 @@ class Engine:
 
     def OnDynamicPad(self, dbin, pad, islast):
         pad.link(self.colorspace.get_pad("sink"))
-        print "OnDynamicPad called"
+        # print "OnDynamicPad called"
 
     def AsyncDone(self):
         seek = self.pipeline.seek (self.speed, gst.FORMAT_TIME, \
             gst.SEEK_FLAG_SEGMENT | gst.SEEK_FLAG_FLUSH | gst.SEEK_FLAG_ACCURATE, \
             gst.SEEK_TYPE_SET, 0, gst.SEEK_TYPE_NONE, 0)
-        print "Async " + str(self.speed) 
+        # print "Async " + str(self.speed) 
 
     def SeekToLocation(self, location):
         self.pipeline.seek(self.speed, gst.FORMAT_TIME, \
             gst.SEEK_FLAG_SEGMENT, gst.SEEK_TYPE_SET, 0, gst.SEEK_TYPE_NONE, \
             location)
-        print "seek to %r" % location
+        # print "seek to %r" % location
 
     def switchVideo(self, filesrc):
         self.pipeline.set_state(gst.STATE_READY)

@@ -20,7 +20,7 @@
 import sys
 
 import gobject
-# gobject.threads_init()
+gobject.threads_init()
 
 import os.path
  
@@ -32,6 +32,7 @@ from gui import Gui
 from videotable import VideoTable
 from sequencer import Sequencer 
 from engine import Engine
+from controller import Controller
 
 TABLE_WIDTH = 5
 TABLE_HEIGHT = 4
@@ -51,8 +52,9 @@ class Freemix:
             os.mkdir(os.environ["HOME"] + "/.freemix/")
 
         engine = Engine()
-        videotable = VideoTable(table_width, table_height, engine)
-        sequencer = Sequencer(sequencer_steps, engine)    
+        controller = Controller(engine)
+        videotable = VideoTable(table_width, table_height, controller)
+        sequencer = Sequencer(sequencer_steps, controller)
 
         gui = Gui(videotable, sequencer) 
         gui.main()

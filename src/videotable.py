@@ -24,10 +24,10 @@ class VideoTable:
     '''VideoTable class is the man in the middle between the gui and the engine.
     It stores and handles the video sources table.'''
 
-    def __init__(self, table_width, table_height, engine):
+    def __init__(self, table_width, table_height, controller):
         '''Initialize variables and fill table with videosources.'''
 
-        self.engine = engine
+        self.controller = controller
 
         self.source_table_width = table_width
         self.source_table_height = table_height
@@ -58,7 +58,7 @@ class VideoTable:
 
         file = self.source_table[video_number].get_file()
         pitch = self.source_table[video_number].get_pitch()
-        self.engine.play(file, pitch)
+        self.controller.play(file, pitch, video_number)
 
     def empty_element(self, video_number):
         '''Empty videotbale cell.'''

@@ -1,0 +1,34 @@
+The interface is made of 3 windows.
+
+main window: Video table and sequencer
+import videos window
+video window
+
+
+import window:
+   - browse your files and select the video you want to import
+   - double click or hit enter to import video
+
+main window:
+   videotable
+      - video will be imported to first empty cell
+      - to play video:
+         - click on video thumbnail
+         - hit accelerator key 
+            (read docs/keyaccelerators)   
+      - move slider besides thumbnail to change playback speed of video
+   
+   sequencer
+      - drag and rop videos from videotable to sequencer
+      - click the checkbox above the thumbnail to activate that sequencer step
+      - changing sequencer speed (bpm)
+         - move slider
+         - click on 'tap' button 4 times
+
+   empty video cells
+      - click the 'empty videos' button to active detach mode
+      - click on thumbnail of video to empty that cell
+
+
+
+

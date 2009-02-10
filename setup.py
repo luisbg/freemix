@@ -19,6 +19,7 @@ setup(name='freemix',
       packages=['freemix'],
       scripts=['freemix'],
       data_files=[
+                  ('share/freemix',['README']),
                   (
                    'share/freemix/img',['img/freemix.png',
                                         'img/freemix_small.png',

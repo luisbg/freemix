@@ -59,7 +59,8 @@ class Gui:
     thumbnail_width = 120
     thumbnail_height = 90
 
-    HOME = os.getenv("HOME")
+    home = os.getenv("HOME")
+    data_dir = "/usr/share/freemix/"
 
     def __init__(self, videotable, sequencer):
         '''Gui initialize.'''
@@ -72,8 +73,8 @@ class Gui:
         self.accel_group = gtk.AccelGroup()
 
         # pixbuf for empty cell
-	#FIXME: Change the file uri in case we are running the installed version
-        self.empty_pixbuf = gtk.gdk.pixbuf_new_from_file("img/empty.png")
+        self.empty_pixbuf = gtk.gdk.pixbuf_new_from_file(self.data_dir \
+            + "img/empty.png")
         
         ### Gui separated into pieces
         self.window()
@@ -98,8 +99,8 @@ class Gui:
 
         # border and icon       
         self.window.set_border_width(10) 
-	#FIXME: Change the file uri in case we are running the installed version
-        icon = gtk.gdk.pixbuf_new_from_file("img/freemix_small.png")
+        icon = gtk.gdk.pixbuf_new_from_file(self.data_dir + \
+            "img/freemix_small.png")
         self.window.set_icon(icon)
 
         # window close
@@ -162,17 +163,17 @@ class Gui:
             gio.FILE_QUERY_INFO_NONE)
         thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
         if not(thumbfile):
-            if os.path.exists(os.environ["HOME"] + '/.freemix' + file):
-                thumbfile = os.environ["HOME"] + '/.freemix' + file
+            if os.path.exists(self.home + '/.freemix' + file):
+                thumbfile = self.home + '/.freemix' + file
             else:
                 print "browse with gnautilus to have the thumbnail of " + file
-                folder = os.environ["HOME"] + '/.freemix' + file[:file.rfind('/')]
+                folder = self.home + '/.freemix' + file[:file.rfind('/')]
                 if not(os.path.exists(folder)):
                     os.makedirs(folder)
                 command = "gnome-video-thumbnailer " + file + " ~/.freemix" + file
                 subprocess.Popen(command, shell=True, \
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                thumbfile = os.environ["HOME"] + "/.freemix" + file 
+                thumbfile = self.home + "/.freemix" + file 
 
                 while not(os.path.exists(thumbfile)):
                     time.sleep(0.5)
@@ -398,8 +399,8 @@ class Gui:
             gio.FILE_QUERY_INFO_NONE)
         thumbfile = info.get_attribute_as_string(gio.FILE_ATTRIBUTE_THUMBNAIL_PATH)
         if not(thumbfile):
-            if os.path.exists(os.environ["HOME"] + '/.freemix' + file_src):
-                thumbfile = os.environ["HOME"] + '/.freemix' + file_src
+            if os.path.exists(self.home + '/.freemix' + file_src):
+                thumbfile = self.home + '/.freemix' + file_src
         thumbnail = gtk.gdk.pixbuf_new_from_file_at_size (thumbfile, \
             self.thumbnail_width, self.thumbnail_height)
         self.seq_step_image[number].set_from_pixbuf(thumbnail)

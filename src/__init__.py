@@ -29,6 +29,9 @@ __copyright__ = "Luis de Bethencourt <luisbg@ubuntu.com>"
 # Here you put the people who collaborate in the project
 __credits__ = """
 Luis de Bethencourt <luisbg@ubuntu.com>
+Alberto Ruiz <aruiz@gnome.org>
+Jan Schmidt <thaytan@noraisin.net>
+Juanje Ojeda <jojeda@emergya.es>
 """
 __license__ = "GPL-2"
 __version__ = "0.2"

@@ -23,6 +23,7 @@ setup(name='freemix',
                   (
                    'share/freemix/img',['img/freemix.png',
                                         'img/freemix_small.png',
+                                        'img/empty.png',
                                         'img/VHSTapeOpen.png']
                   ),
                   (

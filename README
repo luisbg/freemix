@@ -1,11 +1,30 @@
 freemix
-    is a free live video editing software, thought for vj's 
-    and video artists in general
+    is a free live video editing software, thought for and made
+    by live video artists.
 
-Need to have installed: 
-    python :         http://www.python.org
-    pygtk :          http://www.gtk.org/
-                     http://www.pygtk.org/
-    gstreamer :
+The following are needed to run:
+   - python
+   - python-gtk2
+   - pygobject  2.16
+   - gstreamer-0.10
+   - gstreamer-0.10-plugins-base
+   - gstreamer-0.10-plugins-good
+   - python-gst0.10
 
-Please visit https://edge.launchpad.net/freemix for more information.
+
+To install:
+./setup.py install  (as root/sudo)
+
+To run:
+freemix
+
+You will need a few videos off course!
+     the more the better, a few hundreds will
+     be enough for the first gigs ;)
+
+Read /usr/share/freemix/docs/use
+
+Please visit https://launchpad.net/freemix for more information.
+and report any bugs you find there.
+
+Enjoy!

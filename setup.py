@@ -15,9 +15,10 @@ setup(name='freemix',
       
       Based on pygtk and gstreamer, freemix gives the video artist a videosources table and a sequencer to mix videos live. While handling the sequencer bpm, video pitch and much more. 
       """,
-      package_dir={'freemix':'src'},
-      packages=['freemix'],
-      scripts=['freemix'],
+      package_dir={'':'src'},
+      packages=[''],
+      scripts=['src/freemix'],
+      py_modules=['controller','engine','gui','sequencer','videsource','videotable'],
       data_files=[
                   ('share/freemix',['README']),
                   (

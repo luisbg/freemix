@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+"""freemix engine class"""
+
 import gobject
 gobject.threads_init() 
 import gst
@@ -121,9 +123,9 @@ class Engine:
         # print "engine got call to play: " + filesrc
         self.speed = speed
         if self.running == False:
-           self.start(filesrc)
+            self.start(filesrc)
         else:
-           self.switchVideo(filesrc) 
+            self.switchVideo(filesrc) 
 
 
 if __name__ == "__main__":

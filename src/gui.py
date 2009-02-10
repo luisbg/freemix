@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+"""freemix pygtk interface class"""
+
 import pygtk
 pygtk.require('2.0')
 import gtk
@@ -70,6 +72,7 @@ class Gui:
         self.accel_group = gtk.AccelGroup()
 
         # pixbuf for empty cell
+	#FIXME: Change the file uri in case we are running the installed version
         self.empty_pixbuf = gtk.gdk.pixbuf_new_from_file("img/empty.png")
         
         ### Gui separated into pieces
@@ -95,6 +98,7 @@ class Gui:
 
         # border and icon       
         self.window.set_border_width(10) 
+	#FIXME: Change the file uri in case we are running the installed version
         icon = gtk.gdk.pixbuf_new_from_file("img/freemix_small.png")
         self.window.set_icon(icon)
 

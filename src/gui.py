@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+"""freemix pygtk interface class"""
+
 import pygtk
 pygtk.require('2.0')
 import gtk

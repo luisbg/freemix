@@ -20,7 +20,6 @@ setup(name='freemix',
       scripts=['src/freemix'],
       py_modules=['controller','engine','gui','sequencer','videsource','videotable'],
       data_files=[
-                  ('share/freemix',['README']),
                   (
                    'share/freemix/img',['img/freemix.png',
                                         'img/freemix_small.png',
@@ -29,7 +28,10 @@ setup(name='freemix',
                   ),
                   (
                    'share/freemix/docs/',['docs/key_accelerators',
-                                          'docs/use']
+                                          'docs/use',
+                                          'README']
                   ),
+                  ('share/applications',['src/freemix.desktop']),
+                  ('share/pixmaps',['img/freemix_small.png']),
                  ]
       )

@@ -10,4 +10,4 @@ if [ -z "$PROGRAM_DIR" ]; then
 fi
  
 cd ${PROGRAM_DIR}
-exec python -O src/freemix.py "$@"
+exec python -O src/freemix "$@"

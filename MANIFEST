@@ -1,0 +1,16 @@
+AUTHORS
+COPYING
+README
+setup.py
+freemix
+src/controller.py
+src/engine.py
+src/freemix
+src/gui.py
+src/sequencer.py
+src/videosource.py
+src/videotable.py
+img/empty.png
+img/freemix.png
+img/freemix_small.png
+img/VHSTapeOpen.png

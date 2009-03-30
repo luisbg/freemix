@@ -1,0 +1,6 @@
+?package(freemix):\
+ needs="X11"\
+ section="Audio/Video"\
+ title="freemix"\
+ command="freemix"
+

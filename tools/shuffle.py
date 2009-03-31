@@ -22,16 +22,19 @@
 """play videos randomly"""
 
 import sys, os
-sys.path.append("../src")
+sys.path.insert(0, "../src")
 
-from engine import Engine
-from controller import Controller
+import gobject
+gobject.threads_init()
 
 import time
 import optparse
 import random
 
-class Tool:
+from engine import Engine
+from controller import Controller
+
+class Shuffle:
     def __init__(self):
         usage = """shuffle.py [input_folder]"""
         parser = optparse.OptionParser(usage = usage)
@@ -45,8 +48,9 @@ class Tool:
             if self.folder.endswith("/"):
                 self.folder = self.folder[:-1]
 
-        engine = Engine()
-        controller = Controller(engine)
+        self.engine = Engine()
+        self.controller = Controller(self.engine)
+        self.bpm = 30
 
         self.tree = []
         ls = os.listdir(self.folder)
@@ -54,16 +58,20 @@ class Tool:
         # Populating database of files in input directory.
         self.browse_folder(ls, self.folder, self.tree)
 
-        length = len(self.tree)
+        self.length = len(self.tree)
         print ""
-        print "Founded " + str(length) + " videos."
+        print "Found " + str(self.length) + " videos."
         print ""
 
-        while True: 
+        self.timeout_id = gobject.timeout_add((60000/self.bpm), self.loop_callback)
+        loop = gobject.MainLoop()
+        loop.run()
+
+    def loop_callback(self):
             video = random.choice(self.tree)
-            controller.play(video, 1.0, 0)
-            print "playing " + video
-            time.sleep(3)
+            self.controller.play(video, 1.0, 0)
+
+            return True
 
     def browse_folder(self, folder, dir, tree):
         '''Creates a tree of all the files and folder inside the in    put dir.'''
@@ -83,7 +91,7 @@ class Tool:
 if __name__ == "__main__":
     try:
         print "Welcome to freemix shuffle... enjoy!"
-        tool = Tool()
+        shuffle = Shuffle()
 
     except SystemExit:
         raise

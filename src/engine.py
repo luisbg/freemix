@@ -38,7 +38,6 @@ class Engine:
         self.running = True 
 
         def bus_handler(unused_bus, message):
-            # print message.type
             if message.type == gst.MESSAGE_SEGMENT_DONE:
                 self.SeekToLocation(0)
             if message.type == gst.MESSAGE_EOS:
@@ -99,8 +98,11 @@ class Engine:
         return self.bin
 
     def OnDynamicPad(self, dbin, pad, islast):
-        pad.link(self.colorspace.get_pad("sink"))
-        # print "OnDynamicPad called"
+        try:
+            pad.link(self.colorspace.get_pad("sink"))
+            # print "OnDynamicPad called"
+        except:
+            pass
 
     def AsyncDone(self):
         seek = self.pipeline.seek (self.speed, gst.FORMAT_TIME, \
@@ -125,8 +127,10 @@ class Engine:
         self.speed = speed
         if self.running == False:
             self.start(filesrc)
+            print "start: " + filesrc
         else:
-            self.switchVideo(filesrc) 
+            self.switchVideo(filesrc)
+            print "playing: " + filesrc
 
 
 if __name__ == "__main__":

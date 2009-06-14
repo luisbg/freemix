@@ -73,6 +73,11 @@ class VideoSource:
 
         return self.used
 
+    def set_unused(self):
+        '''Set the element to unused'''
+
+        self.used = False
+
     def activate(self):
         '''Activate element.'''
 

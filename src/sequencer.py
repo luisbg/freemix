@@ -51,6 +51,7 @@ class Sequencer:
     def load_file(self, step, file_src):
         '''Load file into sequencer step.'''
 
+        self.sequencer_sources[step].set_unused()
         self.sequencer_sources[step].set_file(file_src)
         print "loading " + file_src + " on step " + str(step)
 

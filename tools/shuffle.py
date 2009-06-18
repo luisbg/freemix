@@ -48,11 +48,16 @@ class Shuffle:
             if self.folder.endswith("/"):
                 self.folder = self.folder[:-1]
 
+            if len(args) == 2:
+                self.bpm = int(args[1])
+            else:
+                self.bpm = 30
+
         self.engine = Engine()
         self.controller = Controller(self.engine)
-        self.bpm = 30
 
         self.tree = []
+        self.folder_short = self.folder.split("/")[-1]
         ls = os.listdir(self.folder)
 
         # Populating database of files in input directory.

@@ -74,7 +74,7 @@ class Gui:
         self.accel_group = gtk.AccelGroup()
 
         # pixbuf for empty cell
-        self.empty_pixbuf = gtk.gdk.pixbuf_new_from_file(self.data_dir \
+        self.clear_pixbuf = gtk.gdk.pixbuf_new_from_file(self.data_dir \
             + "img/empty.png")
         
         ### Gui separated into pieces
@@ -200,10 +200,10 @@ class Gui:
         free_vid_box = gtk.HBox(False, 0)
         vid_table_box.pack_start(free_vid_box, True, True, 0)
 
-        empty_label = gtk.Label("")
-        free_vid_box.pack_start(empty_label, True, True, 0)
+        clear_label = gtk.Label("")
+        free_vid_box.pack_start(clear_label, True, True, 0)
         
-        self.attach_detach_button = gtk.ToggleButton("  empty videos  ")
+        self.attach_detach_button = gtk.ToggleButton("  clear videos mode  ")
         self.attach_detach_button.connect("clicked", self.switch_attach_detach_mode, None)
         free_vid_box.pack_start(self.attach_detach_button, False, False, 0)
 
@@ -226,7 +226,7 @@ class Gui:
                 # video source button
                 self.button_src.append(gtk.Button())
                 self.video_image.append(gtk.Image())
-                self.video_image[i].set_from_pixbuf(self.empty_pixbuf)
+                self.video_image[i].set_from_pixbuf(self.clear_pixbuf)
                 self.button_src[i].set_image(self.video_image[i])
 
                 self.button_src[i].drag_source_set(gtk.gdk.BUTTON1_MASK, target_table, gtk.gdk.ACTION_COPY)
@@ -265,9 +265,9 @@ class Gui:
             print self.videotable.get_file(number)
             self.videotable.video_play(number)
         else:
-            # empty video cell
-            self.videotable.empty_element(number) 
-            self.video_image[number].set_from_pixbuf(self.empty_pixbuf)
+            # clear video cell
+            self.videotable.clear_element(number) 
+            self.video_image[number].set_from_pixbuf(self.clear_pixbuf)
             self.video_pitch_adj[number].set_value(1.0)
 
     def video_pitch_changed(self, widget, number):
@@ -324,7 +324,7 @@ class Gui:
                 
             self.button_seq_step.append(gtk.ToggleButton())
             self.seq_step_image.append(gtk.Image())
-            self.seq_step_image[i].set_from_pixbuf(self.empty_pixbuf)
+            self.seq_step_image[i].set_from_pixbuf(self.clear_pixbuf)
             self.button_seq_step[i].set_image(self.seq_step_image[i])
 
             self.button_seq_step[i].drag_dest_set(gtk.DEST_DEFAULT_ALL, target_table, gtk.gdk.ACTION_COPY)
@@ -375,10 +375,10 @@ class Gui:
             print self.sequencer.get_file(number)
             self.sequencer.step_play(number)
         else:
-            # if in detach mode empty cell
+            # if in detach mode clear cell
             self.seq_active_checkbox[number].set_active(False)
-            self.sequencer.empty_step(number)
-            self.seq_step_image[number].set_from_pixbuf(self.empty_pixbuf)
+            self.sequencer.clear_step(number)
+            self.seq_step_image[number].set_from_pixbuf(self.clear_pixbuf)
             self.seq_step_pitch_adj[number].set_value(1.0)
 
     def seq_step_active(self, widget, number):

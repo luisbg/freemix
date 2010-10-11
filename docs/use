@@ -19,15 +19,15 @@ main window:
       - move slider besides thumbnail to change playback speed of video
    
    sequencer
-      - drag and rop videos from videotable to sequencer
+      - drag and drop videos from videotable to sequencer
       - click the checkbox above the thumbnail to activate that sequencer step
       - changing sequencer speed (bpm)
          - move slider
          - click on 'tap' button 4 times
 
-   empty video cells
-      - click the 'empty videos' button to active detach mode
-      - click on thumbnail of video to empty that cell
+   clear video cells
+      - click the 'clear videos mode' button to active detach mode
+      - click on thumbnail of video to clear that cell
 
 
 

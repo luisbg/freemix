@@ -59,8 +59,8 @@ class VideoSource:
 
         return self.pitch
 
-    def empty(self):
-        '''Empty the element if used.'''
+    def clear(self):
+        '''Clear the element if used.'''
 
         if (self.used == True):
             print "emptying: " + self.file

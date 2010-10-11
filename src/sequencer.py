@@ -55,10 +55,10 @@ class Sequencer:
         self.sequencer_sources[step].set_file(file_src)
         print "loading " + file_src + " on step " + str(step)
 
-    def empty_step(self, step):
-        '''Empty sequencer step.'''
+    def clear_step(self, step):
+        '''Clear sequencer step.'''
 
-        self.sequencer_sources[step].empty()
+        self.sequencer_sources[step].clear()
         self.sequencer_sources[step].deactivate()
 
     def sequencer_pitch_tap(self):

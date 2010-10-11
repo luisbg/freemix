@@ -63,10 +63,10 @@ class VideoTable:
         pitch = self.source_table[video_number].get_pitch()
         self.controller.play(file, pitch, video_number)
 
-    def empty_element(self, video_number):
-        '''Empty videotbale cell.'''
+    def clear_element(self, video_number):
+        '''Clear videotbale cell.'''
 
-        self.source_table[video_number].empty()
+        self.source_table[video_number].clear()
 
     def change_video_pitch(self, video_number, pitch):
         '''Change the pitch of the videotable cell.'''

@@ -255,14 +255,14 @@ class Gui:
         '''Switches the mode of attach or detach.'''
 
         self.attach_detach_mode = not self.attach_detach_mode
-        print self.attach_detach_mode
+        # print self.attach_detach_mode
 
     def vid_button_clicked(self, widget, number):
         '''When the video cell button is clicked.'''
 
         if self.attach_detach_mode:
             # playback video
-            print self.videotable.get_file(number)
+            # print self.videotable.get_file(number)
             self.videotable.video_play(number)
         else:
             # clear video cell
@@ -372,7 +372,7 @@ class Gui:
 
         if self.attach_detach_mode:
             # if in attach mode playback step file
-            print self.sequencer.get_file(number)
+            # print self.sequencer.get_file(number)
             self.sequencer.step_play(number)
         else:
             # if in detach mode clear cell

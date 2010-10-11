@@ -63,7 +63,7 @@ class VideoSource:
         '''Clear the element if used.'''
 
         if (self.used == True):
-            print "emptying: " + self.file
+            # print "emptying: " + self.file
             self.used = False
             self.file = ""
             self.pitch = 1.0

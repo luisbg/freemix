@@ -45,7 +45,7 @@ class Engine:
             if message.type == gst.MESSAGE_TAG:
                 self.SeekToLocation(0)
             if message.type == gst.MESSAGE_ERROR:
-                print "ERROR"
+                print "gstreamer ERROR"
             return gst.BUS_PASS
 
         # create our pipeline
@@ -127,10 +127,10 @@ class Engine:
         self.speed = speed
         if self.running == False:
             self.start(filesrc)
-            print "start: " + filesrc
+            # print "start: " + filesrc
         else:
             self.switchVideo(filesrc)
-            print "playing: " + filesrc
+            # print "playing: " + filesrc
 
 
 if __name__ == "__main__":

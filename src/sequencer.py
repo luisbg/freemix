@@ -53,7 +53,7 @@ class Sequencer:
 
         self.sequencer_sources[step].set_unused()
         self.sequencer_sources[step].set_file(file_src)
-        print "loading " + file_src + " on step " + str(step)
+        # print "loading " + file_src + " on step " + str(step)
 
     def clear_step(self, step):
         '''Clear sequencer step.'''
@@ -93,7 +93,7 @@ class Sequencer:
         '''BPM changed, set new one.'''
 
         self.bpm = bpm
-        print "bpm now: " + str(self.bpm)
+        # print "bpm now: " + str(self.bpm)
 
     def loop_callback(self):
         '''Run step.'''
@@ -133,8 +133,8 @@ class Sequencer:
         else:
             # if unactive, activate
             self.sequencer_sources[step].activate()
-        print str(step) + " now " \
-            + str(self.sequencer_sources[step].is_active())
+        # print str(step) + " now " \
+        #    + str(self.sequencer_sources[step].is_active())
 
     def change_seq_video_pitch(self, step_number, pitch):
         '''Change the pitch of the video in the sequencer step.'''

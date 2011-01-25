@@ -42,7 +42,7 @@ class Gui:
 
     # video sources
     attach_detach_mode = True
-
+ 
     button_src = []
     video_image = []
     video_pitch = []
@@ -74,7 +74,7 @@ class Gui:
         self.accel_group = gtk.AccelGroup()
 
         # pixbuf for empty cell
-        self.clear_pixbuf = gtk.gdk.pixbuf_new_from_file(self.data_dir \
+        self.empty_pixbuf = gtk.gdk.pixbuf_new_from_file(self.data_dir \
             + "img/empty.png")
         
         ### Gui separated into pieces
@@ -195,20 +195,29 @@ class Gui:
         self.vbox1.pack_start(vidsrc_frame, False, False, 0)
         vid_table_box = gtk.VBox(False, 0)
         vidsrc_frame.add(vid_table_box)
+      	vid_button_box = gtk.HButtonBox()
 
         # attach detach mode
         free_vid_box = gtk.HBox(False, 0)
-        vid_table_box.pack_start(free_vid_box, True, True, 0)
-
-        clear_label = gtk.Label("")
-        free_vid_box.pack_start(clear_label, True, True, 0)
+        vid_button_box.pack_start(free_vid_box, True, True, 0)
+	
+        empty_label = gtk.Label("")
+        free_vid_box.pack_start(empty_label, True, True, 0)
         
-        self.attach_detach_button = gtk.ToggleButton("  clear videos mode  ")
+        self.attach_detach_button = gtk.ToggleButton("  empty videos  ")
         self.attach_detach_button.connect("clicked", self.switch_attach_detach_mode, None)
         free_vid_box.pack_start(self.attach_detach_button, False, False, 0)
 
-        separator = gtk.HSeparator()
-        vid_table_box.pack_start(separator, True, True, 0)
+        # load video button
+        load_vid_box = gtk.HBox(False, 0)
+        vid_button_box.pack_start(load_vid_box, True, True, 0)
+        vid_table_box.pack_start(vid_button_box, True, True, 0)
+
+        load_vid_box.pack_start(empty_label, True, True, 0)
+
+        self.load_vid_button = gtk.Button("  load video  ")
+        self.load_vid_button.connect("clicked", self.load_vid_clicked, None)
+        load_vid_box.pack_start(self.load_vid_button, False, False, 0)
 
         # sources table
         sources_table = gtk.Table(self.VIDTABLE_COLUMNS - 1, self.VIDTABLE_ROWS - 1, True)
@@ -226,7 +235,7 @@ class Gui:
                 # video source button
                 self.button_src.append(gtk.Button())
                 self.video_image.append(gtk.Image())
-                self.video_image[i].set_from_pixbuf(self.clear_pixbuf)
+                self.video_image[i].set_from_pixbuf(self.empty_pixbuf)
                 self.button_src[i].set_image(self.video_image[i])
 
                 self.button_src[i].drag_source_set(gtk.gdk.BUTTON1_MASK, target_table, gtk.gdk.ACTION_COPY)
@@ -257,6 +266,12 @@ class Gui:
         self.attach_detach_mode = not self.attach_detach_mode
         # print self.attach_detach_mode
 
+    def load_vid_clicked(self, widget, data=None):
+        '''Loads a new video importing window.'''
+
+        self.import_file_frame()
+        self.import_window.show_all()
+
     def vid_button_clicked(self, widget, number):
         '''When the video cell button is clicked.'''
 
@@ -265,9 +280,9 @@ class Gui:
             # print self.videotable.get_file(number)
             self.videotable.video_play(number)
         else:
-            # clear video cell
-            self.videotable.clear_element(number) 
-            self.video_image[number].set_from_pixbuf(self.clear_pixbuf)
+            # empty video cell
+            self.videotable.empty_element(number) 
+            self.video_image[number].set_from_pixbuf(self.empty_pixbuf)
             self.video_pitch_adj[number].set_value(1.0)
 
     def video_pitch_changed(self, widget, number):
@@ -324,7 +339,7 @@ class Gui:
                 
             self.button_seq_step.append(gtk.ToggleButton())
             self.seq_step_image.append(gtk.Image())
-            self.seq_step_image[i].set_from_pixbuf(self.clear_pixbuf)
+            self.seq_step_image[i].set_from_pixbuf(self.empty_pixbuf)
             self.button_seq_step[i].set_image(self.seq_step_image[i])
 
             self.button_seq_step[i].drag_dest_set(gtk.DEST_DEFAULT_ALL, target_table, gtk.gdk.ACTION_COPY)
@@ -375,10 +390,10 @@ class Gui:
             # print self.sequencer.get_file(number)
             self.sequencer.step_play(number)
         else:
-            # if in detach mode clear cell
+            # if in detach mode empty cell
             self.seq_active_checkbox[number].set_active(False)
-            self.sequencer.clear_step(number)
-            self.seq_step_image[number].set_from_pixbuf(self.clear_pixbuf)
+            self.sequencer.empty_step(number)
+            self.seq_step_image[number].set_from_pixbuf(self.empty_pixbuf)
             self.seq_step_pitch_adj[number].set_value(1.0)
 
     def seq_step_active(self, widget, number):

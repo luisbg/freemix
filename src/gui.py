@@ -61,7 +61,20 @@ class Gui:
     thumbnail_height = 90
 
     home = os.getenv("HOME")
-    data_dir = "/usr/share/freemix/"
+    dir = "/usr/share/freemix/"
+    if os.path.exists(dir):
+        data_dir = dir
+        print "it exists"
+    else:
+        dir = "/usr/local/share/freemix/"
+        if os.path.exists(dir):
+            data_dir = dir
+        else:
+            print "No freemix folder found in /usr/\n" + \
+                  "Are you sure freemix has been correctly `installed?"
+            # Try pwd in case freemix is executed from source code folder
+            data_dir = ""
+
 
     def __init__(self, videotable, sequencer):
         '''Gui initialize.'''
